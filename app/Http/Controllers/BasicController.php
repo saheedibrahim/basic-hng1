@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
 
+use GuzzleHttp\Client;
 class BasicController extends Controller
 {
     public function greet(Request $request)
@@ -12,43 +12,37 @@ class BasicController extends Controller
         // Get visitor name from query parameter
         $visitorName = $request->input('visitor_name', 'Guest');
 
-        // Get client IP address
-        $clientIp = $request->ip();
-
         // Fetch location based on IP address (using a service like ip-api.com)
-        $location = $this->getLocationByIp($clientIp);
-
-        // Fetch current temperature for the location (using a weather API like OpenWeatherMap)
-        $temperature = $this->getCurrentTemperature($location['city']);
+        $location = $this->getLocationByIp();
+        $temperature = $this->getTemperature($location);
 
         // Prepare response data
         $response = [
-            'client_ip' => $clientIp,
+            'client_ip' => $location['query'],
             'location' => $location['city'],
-            'greeting' => "Hello, $visitorName! The temperature is $temperature degrees Celsius in {$location['city']}."
+            'greeting' => "Hello, $visitorName! The temperature is {$temperature['current']['temp_c']} degrees Celsius in {$location['city']}."
+            // 'greeting' => "Hello, $visitorName! The temperature is $temperature degrees Celsius in {$location['city']}."
         ];
 
         return response()->json($response);
     }
 
-    private function getLocationByIp($ip)
+    private function getLocationByIp()
     {
         $client = new Client();
-        $response = $client->get("http://ip-api.com/json/$ip");
+        $response = $client->get("http://ip-api.com/json");
         $data = json_decode($response->getBody(), true);
 
-        return [
-            'city' => $data['city']
-        ];
+        return $data;
     }
-
-    private function getCurrentTemperature($city)
+    
+    private function getTemperature($getLoc)
     {
-        $apiKey = env('OPENWEATHERMAP_API_KEY');
         $client = new Client();
-        $response = $client->get("http://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey&units=metric");
+        $api = "30329a0a640c479ebec65139240307";
+        $response = $client->get("http://api.weatherapi.com/v1/current.json?key=$api&q={$getLoc['lat']},{$getLoc['lon']}");
         $data = json_decode($response->getBody(), true);
 
-        return $data['main']['temp'];
+        return $data;
     }
 }

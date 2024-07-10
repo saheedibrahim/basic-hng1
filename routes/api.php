@@ -9,3 +9,4 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/greet', [BasicController::class, 'greet']);
+Route::get('getip', [BasicController::class, 'getLocationByIp']);

@@ -27,7 +27,7 @@ class BasicController extends Controller
         return response()->json($response);
     }
 
-    public function getLocationByIp($ip)
+    private function getLocationByIp($ip)
     {
         $client = new Client();
 

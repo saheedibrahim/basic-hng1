@@ -21,7 +21,6 @@ class BasicController extends Controller
             'client_ip' => $location['query'],
             'location' => $location['city'],
             'greeting' => "Hello, $visitorName! The temperature is {$temperature['current']['temp_c']} degrees Celsius in {$location['city']}."
-            // 'greeting' => "Hello, $visitorName! The temperature is $temperature degrees Celsius in {$location['city']}."
         ];
 
         return response()->json($response);

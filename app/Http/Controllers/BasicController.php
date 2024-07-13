@@ -39,26 +39,14 @@ class BasicController extends Controller
         }
 
         $client = new Client();
+        $key = 'at_AREGixbN54oYfVFZ3hDwbbNDRJ0HT';
 
-        $response = $client->get("http://ip-api.com/json/{$clientIp}");
+        // $response = $client->get("http://ip-api.com/json/{$clientIp}");
+        $response = $client->get("https://geo.ipify.org/api/v1?apiKey=$key&ipAddress={$clientIp}");
         $data = json_decode($response->getBody(), true);
 
         return $data;
     }
-
-
-    // private function getLocationByIp($ip)
-    // {
-    //     $client = new Client();
-
-    //     $response = $client->get("http://ip-api.com/json/{$ip}");
-    //     $data = json_decode($response->getBody(), true);
-
-    //     // dd($response);
-
-    //     return $data;
-
-    // }
     
     private function getTemperature($getLoc)
     {

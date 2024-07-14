@@ -10,3 +10,4 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/greet', [BasicController::class, 'greet']);
 Route::get('getip', [BasicController::class, 'getLocationByIp']);
+Route::get('gettemperature', [BasicController::class, 'getTemperature']);

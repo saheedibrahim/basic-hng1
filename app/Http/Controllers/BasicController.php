@@ -27,7 +27,7 @@ class BasicController extends Controller
         return response()->json($response);
     }
     
-    private function getLocationByIp($ip)
+    public function getLocationByIp($ip)
     {
         // Validate if $ip is a client IP or server IP
         if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
@@ -48,7 +48,7 @@ class BasicController extends Controller
         return $data;
     }
     
-    private function getTemperature($getLoc)
+    public function getTemperature($getLoc)
     {
         $client = new Client();
         $api = "30329a0a640c479ebec65139240307";

@@ -19,15 +19,15 @@ class BasicController extends Controller
 
         // Prepare response data
         $response = [
-            'client_ip' => $location['query'],
-            'location' => $location['city'],
+            'client_ip' => $location['ip'],
+            'location' => $location['location']['city'],
             'greeting' => "Hello, $visitorName! The temperature is {$temperature['current']['temp_c']} degrees Celsius in {$location['city']}."
         ];
 
         return response()->json($response);
     }
     
-    public function getLocationByIp($ip)
+    private function getLocationByIp($ip)
     {
         // Validate if $ip is a client IP or server IP
         if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {

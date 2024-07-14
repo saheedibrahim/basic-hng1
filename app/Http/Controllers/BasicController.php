@@ -27,7 +27,7 @@ class BasicController extends Controller
         return response()->json($response);
     }
     
-    private function getLocationByIp($ip)
+    public function getLocationByIp($ip)
     {
         // Validate if $ip is a client IP or server IP
         if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
@@ -39,10 +39,10 @@ class BasicController extends Controller
         }
 
         $client = new Client();
-        $key = 'at_AREGixbN54oYfVFZ3hDwbbNDRJ0HT';
+        $apikey = 'at_AREGixbN54oYfVFZ3hDwbbNDRJ0HT';
 
         // $response = $client->get("http://ip-api.com/json/{$clientIp}");
-        $response = $client->get("https://geo.ipify.org/api/v1?apiKey=$key&ipAddress={$clientIp}");
+        $response = $client->get("https://geo.ipify.org/api/v1?apiKey={$apikey}&ipAddress={$clientIp}");
         $data = json_decode($response->getBody(), true);
 
         return $data;
@@ -52,7 +52,7 @@ class BasicController extends Controller
     {
         $client = new Client();
         $api = "30329a0a640c479ebec65139240307";
-        $response = $client->get("http://api.weatherapi.com/v1/current.json?key=$api&q={$getLoc['lat']},{$getLoc['lon']}");
+        $response = $client->get("http://api.weatherapi.com/v1/current.json?key=$api&q={$getLoc['location']['lat']},{$getLoc['location']['lng']}");
         $data = json_decode($response->getBody(), true);
 
         return $data;
